@@ -120,13 +120,17 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
     $scope.userHasSkill = function(skill) {
         var found = [];
 
-        if (typeof $scope.user !== 'undefined') {
+        if (typeof $scope.user !== 'undefined' && typeof $scope.user.skills !== 'undefined') {
             found = $scope.user.skills.filter(function(item) {
                 return item.id === skill.id;
             });
         }
 
         return found.length > 0;
+    };
+
+    $scope.userChangeSkill = function($event, skill) {
+        console.log($event, skill);
     };
 });
 
