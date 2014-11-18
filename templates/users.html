@@ -11,10 +11,10 @@
             </tr>
         </thead>
         <body>
-            <tr ng-repeat="user in users">
-                <td>{{ user.first_name }}</td>
-                <td>{{ user.last_name }}</td>
-                <td>{{ user.title.name }}</td>
+            <tr ng-repeat="user in ::users">
+                <td>{{ ::user.first_name }}</td>
+                <td>{{ ::user.last_name }}</td>
+                <td>{{ ::user.title.name }}</td>
                 <td><a ng-click="editUser(user)">update</a> | <a ng-click="deleteUser(user)">delete</a></td>
             </tr>
         </body>
@@ -29,6 +29,13 @@
         <div class="form-group">
             <label for="last_name">Last Name</label>
             <input type="text" class="form-control" id="last_name" ng-model="user.last_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Title</label>
+            <select class="form-control" ng-model="user.title_id" ng-options="title.id as title.name for title in titles">
+                <option value="">Select One</option>
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary" ng-disabled="createUserForm.$invalid">Submit</button>
