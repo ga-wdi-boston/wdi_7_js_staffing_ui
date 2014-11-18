@@ -1,43 +1,48 @@
 <div class="container">
     <h2>Users</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Title</th>
-                <th></th>
-            </tr>
-        </thead>
-        <body>
-            <tr ng-repeat="user in ::users">
-                <td>{{ ::user.first_name }}</td>
-                <td>{{ ::user.last_name }}</td>
-                <td>{{ ::user.title.name }}</td>
-                <td><a ng-click="editUser(user)">update</a> | <a ng-click="deleteUser(user)">delete</a></td>
-            </tr>
-        </body>
-    </table>
-
-	<form role="form" name="createUserForm" ng-submit="upsertUser(user)" novalidate>
-        <div class="form-group">
-            <label for="first_name">First Name</label>
-            <input type="text" class="form-control" id="first_name" ng-model="user.first_name" required>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Title</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <body>
+                    <tr ng-repeat="user in ::users">
+                        <td>{{ ::user.first_name }}</td>
+                        <td>{{ ::user.last_name }}</td>
+                        <td>{{ ::user.title.name }}</td>
+                        <td><a ng-click="editUser(user)">update</a> | <a ng-click="deleteUser(user)">delete</a></td>
+                    </tr>
+                </body>
+            </table>
         </div>
-        
-        <div class="form-group">
-            <label for="last_name">Last Name</label>
-            <input type="text" class="form-control" id="last_name" ng-model="user.last_name" required>
-        </div>
+        <div class="col-md-5 col-md-offset-1">
+            <form role="form" name="createUserForm" ng-submit="upsertUser(user)" novalidate>
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" ng-model="user.first_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" ng-model="user.last_name" required>
+                </div>
 
-        <div class="form-group">
-            <label>Title</label>
-            <select class="form-control" ng-model="user.title_id" ng-options="title.id as title.name for title in titles">
-                <option value="">Select One</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <select class="form-control" ng-model="user.title_id" ng-options="title.id as title.name for title in titles">
+                        <option value="">Select One</option>
+                    </select>
+                </div>
 
-        <button type="submit" class="btn btn-primary" ng-disabled="createUserForm.$invalid">Submit</button>
-    </form>
+                <button type="submit" class="btn btn-primary" ng-disabled="createUserForm.$invalid">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
