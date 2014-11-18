@@ -3,7 +3,8 @@ angular.module('StaffingUI', [
     'ngRoute'
 ]);
 
-angular.module('StaffingUI').run(function(TitleFactory) {
+angular.module('StaffingUI').run(function(UserFactory, TitleFactory) {
+    UserFactory.fetch();
     TitleFactory.fetch();
 });
 
@@ -35,6 +36,24 @@ angular.module('StaffingUI').controller('NavbarCtrl', function($scope, $location
     };
 });
 
+angular.module('StaffingUI').factory('UserFactory', function($http) {
+    var users = [];
+
+    var fetch = function() {
+        $http.get('http://localhost:3000/users').success(function(response) {
+            // use angular.copy() to retain the original array which the controllers are bound to
+            // tasks = response will overwrite the array with a new one and the controllers loose the reference
+            // could also do tasks.length = 0, then push in the new items
+            angular.copy(response, users);
+        });
+    };
+
+    return {
+        users: users,
+        fetch: fetch
+    };
+});
+
 angular.module('StaffingUI').factory('TitleFactory', function($http) {
     var titles = [];
 
@@ -53,13 +72,10 @@ angular.module('StaffingUI').factory('TitleFactory', function($http) {
     };
 });
 
-angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, TitleFactory) {
+angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, TitleFactory, UserFactory) {
     'use strict';
 
-    $http.get('http://localhost:3000/users').success(function(response) {
-        $scope.users = response;
-    });
-
+    $scope.users = UserFactory.users;
     $scope.titles = TitleFactory.titles;
 
     $scope.upsertUser = function(user) {
@@ -68,10 +84,12 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
         };
         
         if (user.id) {
-            $http.put('http://localhost:3000/users/' + user.id, params);
+            $http.put('http://localhost:3000/users/' + user.id, params).success(function(response) {
+                UserFactory.fetch();
+            });
         } else {
             $http.post('http://localhost:3000/users', params).success(function(response) {
-                $scope.users.push(response);
+                UserFactory.fetch();
             });
         }
 
