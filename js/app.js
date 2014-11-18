@@ -28,14 +28,6 @@ angular.module('StaffingUI').config(function($routeProvider) {
         });
 });
 
-angular.module('StaffingUI').controller('NavbarCtrl', function($scope, $location) {
-    'use strict';
-
-    $scope.isActive = function(viewLocation) {
-        return viewLocation === $location.path();
-    };
-});
-
 angular.module('StaffingUI').factory('UserFactory', function($http) {
     var users = [];
 
