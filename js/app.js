@@ -81,13 +81,16 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
 
     $scope.titles = TitleFactory.titles;
     $scope.skills = SkillFactory.skills;
+    $scope.skillSelection = [];
+
+    $scope.$watch('skillSelection', function(newValue, oldValue) {
+        console.log($scope.skillSelection);
+    });
 
     $scope.upsertUser = function(user) {
         var params = {
             user: user
         };
-
-        console.log(user);
         
         // if (user.id) {
         //     $http.put('http://localhost:3000/users/' + user.id, params);
@@ -127,10 +130,6 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
         }
 
         return found.length > 0;
-    };
-
-    $scope.userChangeSkill = function($event, skill) {
-        console.log($event, skill);
     };
 });
 
