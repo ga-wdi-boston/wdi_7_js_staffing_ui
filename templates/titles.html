@@ -1,13 +1,22 @@
 <div class="container">
     <h2>Titles</h2>
 
-	<ul>
-	    <li ng-repeat="title in titles">{{ title.name }} <a ng-click="editTitle(title)">update</a> <a ng-click="deleteTitle(title)">delete</a></li>
-	</ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <body>
+            <tr ng-repeat="title in titles">
+                <td>{{ title.name }}</td>
+                <td><a ng-click="editTitle(title)">update</a> | <a ng-click="deleteTitle(title)">delete</a></td>
+            </tr>
+        </body>
+    </table>
 
 	<form role="form" name="createTitleForm" ng-submit="upsertTitle(title)" novalidate>
-        <br>
-        
         <div class="form-group">
             <label for="title">Name</label>
             <input type="text" class="form-control" id="title" ng-model="title.name" required>

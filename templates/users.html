@@ -1,13 +1,26 @@
 <div class="container">
     <h2>Users</h2>
 
-	<ul>
-	    <li ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }} <a ng-click="editUser(user)">update</a> <a ng-click="deleteUser(user)">delete</a></li>
-	</ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Title</th>
+                <th></th>
+            </tr>
+        </thead>
+        <body>
+            <tr ng-repeat="user in users">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.title.name }}</td>
+                <td><a ng-click="editUser(user)">update</a> | <a ng-click="deleteUser(user)">delete</a></td>
+            </tr>
+        </body>
+    </table>
 
 	<form role="form" name="createUserForm" ng-submit="upsertUser(user)" novalidate>
-        <br>
-        
         <div class="form-group">
             <label for="first_name">First Name</label>
             <input type="text" class="form-control" id="first_name" ng-model="user.first_name" required>
