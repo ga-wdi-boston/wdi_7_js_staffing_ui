@@ -83,14 +83,20 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
     $scope.skills = SkillFactory.skills;
     $scope.skillSelection = [];
 
-    $scope.$watch('skillSelection', function(newValue, oldValue) {
-        console.log($scope.skillSelection);
+    // when skills collection changes, populate the skillSelection collection
+    // with objects containing the id and a boolean selected property
+    $scope.$watchCollection('skills', function(newValue, oldValue) {
+        $scope.skillSelection = $scope.skills.map(function(item) {
+            return {id: item.id, selected: false};
+        });
     });
 
     $scope.upsertUser = function(user) {
         var params = {
             user: user
         };
+
+        console.log($scope.skillSelection);
         
         // if (user.id) {
         //     $http.put('http://localhost:3000/users/' + user.id, params);
@@ -105,6 +111,15 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
 
     $scope.editUser = function(user) {
         $scope.user = user;
+
+        // reset skillSelection collection based on the user
+        $scope.skillSelection = $scope.skills.map(function(item) {
+            if ($scope.userHasSkill(item)) {
+                return {id: item.id, selected: true};
+            } else {
+                return {id: item.id, selected: false};
+            }
+        });
     };
 
     $scope.deleteUser = function(user) {
