@@ -22,6 +22,7 @@
                 </body>
             </table>
         </div>
+
         <div class="col-md-5 col-md-offset-1">
             <form role="form" name="createUserForm" ng-submit="upsertUser(user)" novalidate>
                 <div class="form-group">
@@ -39,6 +40,14 @@
                     <select class="form-control" ng-model="user.title_id" ng-options="title.id as title.name for title in titles">
                         <option value="">Select One</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox" ng-repeat="skill in skills">
+                        <label>
+                            <input type="checkbox" name="skills" value="{{ skill.id }}" ng-checked="userHasSkill(skill)">{{ skill.name }}
+                        </label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary" ng-disabled="createUserForm.$invalid">Submit</button>

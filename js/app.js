@@ -3,8 +3,9 @@ angular.module('StaffingUI', [
     'ngRoute'
 ]);
 
-angular.module('StaffingUI').run(function(TitleFactory) {
+angular.module('StaffingUI').run(function(TitleFactory, SkillFactory) {
     TitleFactory.fetch();
+    SkillFactory.fetch();
 });
 
 angular.module('StaffingUI').config(function($routeProvider) {
@@ -53,7 +54,25 @@ angular.module('StaffingUI').factory('TitleFactory', function($http) {
     };
 });
 
-angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, TitleFactory) {
+angular.module('StaffingUI').factory('SkillFactory', function($http) {
+    var skills = [];
+
+    var fetch = function() {
+        $http.get('http://localhost:3000/skills').success(function(response) {
+            // use angular.copy() to retain the original array which the controllers are bound to
+            // tasks = response will overwrite the array with a new one and the controllers loose the reference
+            // could also do tasks.length = 0, then push in the new items
+            angular.copy(response, skills);
+        });
+    };
+
+    return {
+        skills: skills,
+        fetch: fetch
+    };
+});
+
+angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, TitleFactory, SkillFactory) {
     'use strict';
 
     $http.get('http://localhost:3000/users').success(function(response) {
@@ -61,19 +80,22 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
     });
 
     $scope.titles = TitleFactory.titles;
+    $scope.skills = SkillFactory.skills;
 
     $scope.upsertUser = function(user) {
         var params = {
             user: user
         };
+
+        console.log(user);
         
-        if (user.id) {
-            $http.put('http://localhost:3000/users/' + user.id, params);
-        } else {
-            $http.post('http://localhost:3000/users', params).success(function(response) {
-                $scope.users.push(response);
-            });
-        }
+        // if (user.id) {
+        //     $http.put('http://localhost:3000/users/' + user.id, params);
+        // } else {
+        //     $http.post('http://localhost:3000/users', params).success(function(response) {
+        //         $scope.users.push(response);
+        //     });
+        // }
 
         $scope.user = {};
     };
@@ -93,6 +115,18 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
                 }
             }
         });
+    };
+
+    $scope.userHasSkill = function(skill) {
+        var found = [];
+
+        if (typeof $scope.user !== 'undefined') {
+            found = $scope.user.skills.filter(function(item) {
+                return item.id === skill.id;
+            });
+        }
+
+        return found.length > 0;
     };
 });
 
