@@ -28,6 +28,8 @@ angular.module('StaffingUI').config(function($routeProvider) {
         });
 });
 
+angular.module('StaffingUI').constant('_', window._);
+
 angular.module('StaffingUI').controller('NavbarCtrl', function($scope, $location) {
     'use strict';
 
@@ -72,7 +74,7 @@ angular.module('StaffingUI').factory('SkillFactory', function($http) {
     };
 });
 
-angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, TitleFactory, SkillFactory) {
+angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, $q, TitleFactory, SkillFactory) {
     'use strict';
 
     $http.get('http://localhost:3000/users').success(function(response) {
@@ -87,26 +89,57 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, Titl
     // with objects containing the id and a boolean selected property
     $scope.$watchCollection('skills', function(newValue, oldValue) {
         $scope.skillSelection = $scope.skills.map(function(item) {
-            return {id: item.id, selected: false};
+            return { id: item.id, selected: false };
         });
     });
+
+    var updateSkills = function(user_id) {
+        var promises = [];
+
+        _.forEach($scope.skillSelection, function(item) {
+            var isSelected = item.selected;
+            var wasSelected = typeof _.find($scope.user.skills, {id: item.id}) !== 'undefined';
+
+            // add skill
+            if (isSelected && !wasSelected) {
+                promises.push($http.put('http://localhost:3000/users/' + user_id + '/skills/' + item.id));
+            }
+
+            // remove skill
+            if (!isSelected && wasSelected) {
+                promises.push($http.delete('http://localhost:3000/users/' + user_id + '/skills/' + item.id));
+            }
+        });
+
+        return promises;
+    };
 
     $scope.upsertUser = function(user) {
         var params = {
             user: user
         };
-
-        console.log($scope.skillSelection);
         
-        // if (user.id) {
-        //     $http.put('http://localhost:3000/users/' + user.id, params);
-        // } else {
-        //     $http.post('http://localhost:3000/users', params).success(function(response) {
-        //         $scope.users.push(response);
-        //     });
-        // }
+        if (user.id) {
+            $http.put('http://localhost:3000/users/' + user.id, params).success(function(response) {
+                $q.all(updateSkills(user.id)).then(function() {
+                    $scope.user = {};
 
-        $scope.user = {};
+                    $http.get('http://localhost:3000/users').success(function(response) {
+                        $scope.users = response;
+                    });
+                });
+            });
+        } else {
+            $http.post('http://localhost:3000/users', params).success(function(response) {
+                $q.all(updateSkills(response.id)).then(function() {
+                    $scope.user = {};
+
+                    $http.get('http://localhost:3000/users').success(function(response) {
+                        $scope.users = response;
+                    });
+                });
+            });
+        }
     };
 
     $scope.editUser = function(user) {

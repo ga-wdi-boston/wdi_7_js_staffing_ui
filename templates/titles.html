@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <body>
-            <tr ng-repeat="title in ::titles">
+            <tr ng-repeat="title in titles">
                 <td>{{ ::title.name }}</td>
                 <td><a ng-click="editTitle(title)">update</a> | <a ng-click="deleteTitle(title)">delete</a></td>
             </tr>
