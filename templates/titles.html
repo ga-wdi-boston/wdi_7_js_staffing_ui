@@ -1,27 +1,33 @@
 <div class="container">
     <h2>Titles</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <body>
-            <tr ng-repeat="title in titles">
-                <td>{{ ::title.name }}</td>
-                <td><a ng-click="editTitle(title)">update</a> | <a ng-click="deleteTitle(title)">delete</a></td>
-            </tr>
-        </body>
-    </table>
-
-	<form role="form" name="createTitleForm" ng-submit="upsertTitle(title)" novalidate>
-        <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" class="form-control" id="title" ng-model="title.name" required>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <body>
+                    <tr ng-repeat="title in titles">
+                        <td>{{ ::title.name }}</td>
+                        <td><a ng-click="editTitle(title)">update</a> | <a ng-click="deleteTitle(title)">delete</a></td>
+                    </tr>
+                </body>
+            </table>
         </div>
 
-        <button type="submit" class="btn btn-primary" ng-disabled="createTitleForm.$invalid">Submit</button>
-    </form>
+        <div class="col-md-5 col-md-offset-1">
+        	<form role="form" name="createTitleForm" ng-submit="upsertTitle(title)" novalidate>
+                <div class="form-group">
+                    <label for="title">Name</label>
+                    <input type="text" class="form-control" id="title" ng-model="title.name" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" ng-disabled="createTitleForm.$invalid">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
