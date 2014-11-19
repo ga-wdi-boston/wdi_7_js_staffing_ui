@@ -27,8 +27,7 @@ angular.module('StaffingUI').controller('TitleCtrl', function($scope, $http, Ser
 
     $scope.deleteTitle = function(title) {
         $http.delete(ServerUrl + 'titles/' + title.id).success(function(response) {
-            var index = $scope.titles.indexOf(title);
-            $scope.titles.splice(index, 1);
+            $scope.titles.splice($scope.titles.indexOf(title), 1);
 
             $scope.title = {};
         });

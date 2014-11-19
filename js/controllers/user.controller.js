@@ -66,8 +66,7 @@ angular.module('StaffingUI').controller('UserCtrl', function($scope, $http, $q, 
 
     $scope.deleteUser = function(user) {
         $http.delete(ServerUrl + 'users/' + user.id).success(function(response) {
-            var index = $scope.users.indexOf(user);
-            $scope.users.splice(index, 1);
+            $scope.users.splice($scope.users.indexOf(user), 1);
 
             clearForm();
         });
