@@ -27,14 +27,8 @@ angular.module('StaffingUI').controller('TitleCtrl', function($scope, $http, Ser
 
     $scope.deleteTitle = function(title) {
         $http.delete(ServerUrl + 'titles/' + title.id).success(function(response) {
-            // remove from users array by id
-            for (var i = 0; i < $scope.titles.length; i++){
-                if ($scope.titles[i].id == title.id) {
-                    $scope.titles.splice(i, 1);
-
-                    break;
-                }
-            }
+            var index = $scope.titles.indexOf(title);
+            $scope.titles.splice(index, 1);
 
             $scope.title = {};
         });
