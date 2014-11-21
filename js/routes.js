@@ -3,7 +3,8 @@ angular.module('StaffingUI').config(function($routeProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'templates/home.html'
+            templateUrl: 'templates/home.html',
+            controller: 'HomeCtrl'
         })
         .when('/users', {
             templateUrl: 'templates/users.html',

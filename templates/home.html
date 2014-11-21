@@ -1,3 +1,17 @@
 <div class="container">
     <h1>Welcome!</h1>
+
+    <ul>
+    	<li ng-repeat="user in users">
+    		<a ng-href="" data-toggle="modal" data-target="#userModal{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</a>
+
+    		<ga-modal title="{{ user.first_name }} {{ user.last_name }}" modalid="userModal{{ user.id }}">
+				<h4>Skills</h4>
+
+				<ul>
+					<li ng-repeat="skill in user.skills">{{ skill.name }}</li>
+				</ul>
+			</ga-modal>
+    	</li>
+    </ul>
 </div>
