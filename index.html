@@ -16,8 +16,6 @@
 </head>
 <body ng-app="StaffingUI">
 
-<ng-include src="'templates/partials/navbar.html'"></ng-include>
-
 <ng-view></ng-view>
 
 <!-- bower components -->
@@ -34,11 +32,13 @@
 
 <!-- controllers -->
 <script src="js/controllers/navbar.controller.js"></script>
+<script src="js/controllers/login.controller.js"></script>
 <script src="js/controllers/home.controller.js"></script>
 <script src="js/controllers/user.controller.js"></script>
 <script src="js/controllers/title.controller.js"></script>
 
 <!-- services -->
+<script src="js/services/auth.factory.js"></script>
 <script src="js/services/user.factory.js"></script>
 <script src="js/services/title.factory.js"></script>
 <script src="js/services/skill.factory.js"></script>

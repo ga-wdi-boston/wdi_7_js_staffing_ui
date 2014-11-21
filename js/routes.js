@@ -14,6 +14,10 @@ angular.module('StaffingUI').config(function($routeProvider) {
             templateUrl: 'templates/titles.html',
             controller: 'TitleCtrl'
         })
+        .when('/login', {
+            templateUrl: 'templates/login.html',
+            controller: 'LoginCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
